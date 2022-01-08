@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
+
     public string itemId = "none";
 
     private int m_amount = 0;
@@ -60,7 +61,6 @@ public class Slot : MonoBehaviour
 
     public void Activate()
     {
-        GetComponent<Image>().color = Color.yellow;
         displayNamePanel.SetActive(!IsEmpty());
 
         active = true;
@@ -68,7 +68,6 @@ public class Slot : MonoBehaviour
 
     public void Deactivate()
     {
-        GetComponent<Image>().color = Color.grey * (1.4f);
         displayNamePanel.SetActive(false);
 
         active = false;

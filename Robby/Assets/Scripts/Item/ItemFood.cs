@@ -1,8 +1,8 @@
 ﻿public class ItemFood : Item
 {
-    public override void Use(Inventory inventory, int slot)
+    public override void Use(Inventory inventory, Slot slot)
     {
-        inventory.RemoveItemFromSlot(slot);
+        slot.RemoveItem();
         // Unfinished
     }
 }

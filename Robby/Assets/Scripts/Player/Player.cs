@@ -44,16 +44,11 @@ public class Player : MonoBehaviour
         controls.Player.Pick.performed += ctx => Util.InvokeIf(PickItem, isRunning);
         controls.Player.ToggleInventory.performed += ctx => Util.InvokeIf(ToggleInventory, !isPaused);
         controls.Player.TogglePauseMenu.performed += ctx => TogglePause();
-        controls.Player.MoveRight.started += ctx => 
-            Util.InvokeIf(() => { inventory.moveActiveSlot(Enums.Direction.Right); }, isInventoryOpen);
-        controls.Player.MoveLeft.started += ctx => 
-            Util.InvokeIf(() => { inventory.moveActiveSlot(Enums.Direction.Left); }, isInventoryOpen);
-        controls.Player.MoveDown.started += ctx => 
-            Util.InvokeIf(() => { inventory.moveActiveSlot(Enums.Direction.Down); }, isInventoryOpen);
-        controls.Player.MoveUp.started += ctx => 
-            Util.InvokeIf(() => { inventory.moveActiveSlot(Enums.Direction.Up); }, isInventoryOpen);
         controls.Player.UseItem.performed += ctx => Util.InvokeIf(inventory.useItem, isInventoryOpen);
+    }
 
+    private void Start()
+    {
         // Initialize Inventory (makes sure all slots run the awake method)
         inventory.gameObject.SetActive(true);
         inventory.gameObject.SetActive(false);

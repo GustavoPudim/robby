@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
@@ -11,45 +13,48 @@ public class Inventory : MonoBehaviour
     public GameObject background;
     public Slot[] slots;
 
-    private int m_activeSlotX = 0;
-    private int m_activeSlotY = 0;
-    public int activeSlotX 
+    private GameObject lastSelect;
+
+    public Slot activeSlot 
     { 
-        get { return m_activeSlotX; } 
-        set 
-        {
-            if(value < 0 || value >= width) return;
+        get 
+        { 
+            if(EventSystem.current.currentSelectedGameObject == null) return null;
 
-            slots[activeSlot].Deactivate();
-            m_activeSlotX = value;
-            slots[activeSlot].Activate();
-        } 
+            EventSystem.current.currentSelectedGameObject.TryGetComponent<Slot>(out Slot slot);
+            return slot;
+        }
     }
-    public int activeSlotY
-    { 
-        get { return m_activeSlotY; } 
-        set 
-        {
-            if(value < 0 || value >= height) return;
 
-            slots[activeSlot].Deactivate();
-            m_activeSlotY = value;
-            slots[activeSlot].Activate();
-        } 
-    }
-    public int activeSlot
+    private Slot lastActiveSlot;
+
+    void Update () 
     {
-        get { return activeSlotX + activeSlotY * width; }
-    }
+        // Workaround to prevent mouse clicks from deselecting objects        
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            EventSystem.current.SetSelectedGameObject(lastSelect);
+        }
+        else
+        {
+            lastSelect = EventSystem.current.currentSelectedGameObject;
+        }
 
-    void Start()
-    {
-        slots[activeSlot].Activate();
+        if(lastActiveSlot != activeSlot && lastActiveSlot) 
+        {
+            lastActiveSlot.Deactivate();
+            activeSlot.Activate();
+        }
+
+        lastActiveSlot = activeSlot;
     }
 
     void OnEnable()
     {
         background.transform.localScale = Vector3.one * Menu.UIScale;
+
+        if(!activeSlot) EventSystem.current.SetSelectedGameObject(slots[0].gameObject);
+        activeSlot.GetComponent<Selectable>().OnSelect(null); // Makes sure the slot is highlighted
     }
 
     public void AddItem(string id)
@@ -82,31 +87,10 @@ public class Inventory : MonoBehaviour
         slots[slotId].RemoveItem();
     }
 
-    public void moveActiveSlot(Enums.Direction direction)
-    {
-        switch(direction)
-        {
-            case Enums.Direction.Right:
-                activeSlotX++;
-                break;
-            case Enums.Direction.Left:
-                activeSlotX--;
-                break;
-            case Enums.Direction.Down:
-                activeSlotY++;
-                break;
-            case Enums.Direction.Up:
-                activeSlotY--;
-                break;
-            default:
-                break;
-        }
-    }
-
     public void useItem()
     {
-        if (slots[activeSlot].itemId.Equals("none")) return;
+        if (activeSlot.itemId.Equals("none")) return;
         
-        Manager.register.GetItemById(slots[activeSlot].itemId).functionality.Use(this, activeSlot);
+        Manager.register.GetItemById(activeSlot.itemId).functionality.Use(this, activeSlot);
     }
 }

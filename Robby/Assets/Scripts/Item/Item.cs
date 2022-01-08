@@ -7,7 +7,7 @@ public class Item : MonoBehaviour
 
     }
 
-    public virtual void Use(Inventory inventory, int slot)
+    public virtual void Use(Inventory inventory, Slot slot)
     {
 
     }
