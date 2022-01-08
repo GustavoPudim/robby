@@ -9,8 +9,6 @@ public class Inventory : UIScreen
     public GameObject background;
     public Slot[] slots;
 
-    private GameObject lastSelect;
-
     public Slot activeSlot 
     { 
         get 
