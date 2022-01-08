@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Inventory : MonoBehaviour
+public class Inventory : UIScreen
 {
     
     [Header("References")]
@@ -26,16 +26,6 @@ public class Inventory : MonoBehaviour
 
     void Update () 
     {
-        // Workaround to prevent mouse clicks from deselecting objects        
-        if (EventSystem.current.currentSelectedGameObject == null)
-        {
-            EventSystem.current.SetSelectedGameObject(lastSelect);
-        }
-        else
-        {
-            lastSelect = EventSystem.current.currentSelectedGameObject;
-        }
-
         if(lastActiveSlot != activeSlot) 
         {
             if(lastActiveSlot) lastActiveSlot.Deactivate();

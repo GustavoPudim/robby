@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Menu : MonoBehaviour
+public class Menu : UIScreen
 {
 
     private static int UISize = 2;
@@ -12,8 +11,6 @@ public class Menu : MonoBehaviour
     { 
         get { return UISize / 4.0f + 0.5f; } 
     }
-    
-    private GameObject lastSelect;
 
     [Header("References")]
     public GameObject mainSection;
@@ -36,19 +33,6 @@ public class Menu : MonoBehaviour
         UpdateUISizeName();
 
         mainSectionSelect.Select();
-    }
-
-    void Update () 
-    {
-        // Workaround to prevent mouse clicks from deselecting objects        
-        if (EventSystem.current.currentSelectedGameObject == null)
-        {
-            EventSystem.current.SetSelectedGameObject(lastSelect);
-        }
-        else
-        {
-            lastSelect = EventSystem.current.currentSelectedGameObject;
-        }
     }
 
     public void HidePointer()
