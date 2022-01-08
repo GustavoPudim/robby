@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,6 +8,8 @@ public class Inventory : UIScreen
     
     [Header("References")]
     public GameObject background;
+    public Selectable firstSelect;
+    public GameObject[] sections;
     public Slot[] slots;
 
     public Slot activeSlot 
@@ -37,8 +40,16 @@ public class Inventory : UIScreen
     {
         background.transform.localScale = Vector3.one * Menu.UIScale;
 
-        if(!activeSlot) EventSystem.current.SetSelectedGameObject(slots[0].gameObject);
-        activeSlot.GetComponent<Selectable>().OnSelect(null); // Makes sure the slot is highlighted
+        if(!EventSystem.current.currentSelectedGameObject) firstSelect.Select();
+        EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().OnSelect(null); // Makes sure the object is highlighted
+    }
+
+    public void OpenSection(int index)
+    {
+        for (int i = 0; i < sections.Length; i++)
+        {
+            sections[i].SetActive(i == index);
+        }
     }
 
     public void AddItem(string id)

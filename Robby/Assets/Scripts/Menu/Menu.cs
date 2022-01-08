@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Menu : UIScreen
@@ -33,6 +34,11 @@ public class Menu : UIScreen
         UpdateUISizeName();
 
         mainSectionSelect.Select();
+    }
+
+    private void OnDisable() 
+    {
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void HidePointer()
