@@ -4,10 +4,6 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-
-    [Header("Attributes")]
-    public int width = 6;
-    public int height = 4;
     
     [Header("References")]
     public GameObject background;
@@ -40,10 +36,10 @@ public class Inventory : MonoBehaviour
             lastSelect = EventSystem.current.currentSelectedGameObject;
         }
 
-        if(lastActiveSlot != activeSlot && lastActiveSlot) 
+        if(lastActiveSlot != activeSlot) 
         {
-            lastActiveSlot.Deactivate();
-            activeSlot.Activate();
+            if(lastActiveSlot) lastActiveSlot.Deactivate();
+            if(activeSlot) activeSlot.Activate();
         }
 
         lastActiveSlot = activeSlot;
